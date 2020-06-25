@@ -375,7 +375,7 @@ bool PylonCameraImpl<CameraTrait>::grab(std::vector<uint8_t>& image)
 
     if ( !is_ready_ )
         is_ready_ = true;
-
+    
     return true;
 }
 
@@ -388,9 +388,8 @@ bool PylonCameraImpl<CameraTrait>::grab(uint8_t* image)
         ROS_ERROR("Error: Grab was not successful");
         return false;
     }
-
+    
     memcpy(image, ptr_grab_result->GetBuffer(), img_size_byte_);
-
     return true;
 }
 
@@ -414,6 +413,7 @@ bool PylonCameraImpl<CameraTrait>::grab(Pylon::CGrabResultPtr& grab_result)
             return false;
         }
         cam_->RetrieveResult(grab_timeout_, grab_result, Pylon::TimeoutHandling_ThrowException);
+	
     }
     catch ( const GenICam::GenericException &e )
     {
@@ -436,9 +436,10 @@ bool PylonCameraImpl<CameraTrait>::grab(Pylon::CGrabResultPtr& grab_result)
 
     if ( !grab_result->GrabSucceeded() )
     {
-        ROS_ERROR_STREAM("Error: " << grab_result->GetErrorCode() << " "
+        ROS_ERROR_STREAM("Grab Succeded Error: " << grab_result->GetErrorCode() << " "
                 << grab_result->GetErrorDescription());
         return false;
+
     }
     return true;
 }
